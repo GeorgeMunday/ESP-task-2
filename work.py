@@ -1,8 +1,16 @@
 houses = [['LONDON','Terraced', 3 ,735000], ['CARDIFF', 'Semi-Detached', 2, 100000], ['LEEDS','Terraced', 3, 245000],['LONDON','Semi-Detatched', 1, 240000]] # needed to add commas here
 sales = []
-ourregions = ['LONDON', 'LEEDS', 'CARDIFF', 'BRISTOL']    
-property_types =  ['TERRACED', 'SEMI-DETATCHED','DETATCHED']
+#ourregions = ['LONDON', 'LEEDS', 'CARDIFF', 'BRISTOL']    they are not used yet
+#property_types =  ['TERRACED', 'SEMI-DETATCHED','DETATCHED'] they are not used
 
+def input_val():
+    while True:
+        try:
+            num = int(input("Enter a number: "))
+            return num
+        except ValueError:
+            print("Invalid input!")
+        return num
 def add_new_property():
     print("new function")
 
@@ -10,7 +18,7 @@ def add_new_property():
 def return_stock():
     print("CURRENT HOUSES FOR SALE \n\n REGION - HOUSE TYPE - BEDROOMS - COST")
     for i in houses:
-        print (i)
+        print (*i)
 
 def unique_regions():
     unique_list = []
@@ -18,7 +26,7 @@ def unique_regions():
     for x in existing_regions:
         if x not in unique_list:       
             unique_list.append(x)
-    print(unique_list)
+    print(*unique_list)
 
 def region_search():
     print("Available Regions")
@@ -39,11 +47,11 @@ def region_search():
 
 
 
-def show_sales(sales):
+def show_sales():
     if len(sales) > 0:    
         print("Forename  Surname Property cost  Total")
         for i in sales:
-            print(i)
+            print(*i)
     else:
         print('no sales')
 
@@ -53,12 +61,12 @@ def house_sale():
     customer_forename = input('Please enter customer forename:')
     customer_surname = input('Please enter customer surname:')
     for i, item in enumerate(houses, 1):
-        print(i, item)
+        print(*i, item)
 
     sel_check = False
     while not sel_check:
         try:
-            select = input('Please select a purchase')# didnt need the extra bracket   
+            select = int(input('Please select a purchase'))# didnt need the extra bracket   #ADDED INT
             if select > 0 and select < len(houses):
                 sel_check = True
         except:
@@ -90,20 +98,18 @@ def house_sale():
 
 
 while True:
-    menuselection = int(input(" WELCOME TO THE NEWHAVEN DASHBOARD \n\n Please select from the following menu options \n\n"
+    print(" WELCOME TO THE NEWHAVEN DASHBOARD \n\n Please select from the following menu options \n\n"
                               " 1: View current houses on market \n 2: Search for available houses in a region \n 3: Record"
-                              " a sale \n 4: Add a new property for sale \n 5: Show Sales \n 6: Exit"))#added space to option 5
+                              " a sale \n 4: Add a new property for sale \n 5: Show Sales \n 6: Exit")
+    menuselection = input_val()
 
-
-    if menuselection == 1:# added brackets to call the functions 
-        return_stock()
-    if menuselection == 2:# added brackets to call the functions 
-        region_search()
-    if menuselection ==3:# added brackets to call the functions 
-        house_sale()
-    if menuselection ==4:# added brackets to call the functions # added a space so all the same
-        add_new_property()
-    if menuselection == 5:# added option 5 and brackets to call the functions
-        show_sales(sales)
-    if menuselection == 6:# added funtion 6 
-        break # exits the code  
+    options = {
+        1: return_stock,
+        2: region_search,
+        3: house_sale,
+        4: add_new_property,
+        5: show_sales,
+        6: exit,
+    }
+    
+    options[menuselection]()
