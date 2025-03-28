@@ -1,4 +1,6 @@
-houses = [['LONDON','Terraced', 3 ,735000], ['CARDIFF', 'Semi-Detached', 2, 100000], ['LEEDS','Terraced', 3, 245000],['LONDON','Semi-Detatched', 1, 240000]] # needed to add commas here
+houses = [['LONDON', 'Terraced', 3, 735000], ['CARDIFF', 'Semi-Detached', 2, 100000], 
+          ['LEEDS', 'Terraced', 3, 245000], ['LONDON', 'Semi-Detached', 1, 240000]]
+# needed to add commas here and formatted it correctly
 sales = []
 #ourregions = ['LONDON', 'LEEDS', 'CARDIFF', 'BRISTOL']    they are not used yet
 #property_types =  ['TERRACED', 'SEMI-DETATCHED','DETATCHED'] they are not used
@@ -10,10 +12,9 @@ def input_val():
             return num
         except ValueError:
             print("Invalid input!")
-        return num
+    
 def add_new_property():
     print("new function")
-
 
 def return_stock():
     print("CURRENT HOUSES FOR SALE \n\n REGION - HOUSE TYPE - BEDROOMS - COST")
@@ -58,43 +59,48 @@ def show_sales():
 
 def house_sale():
     sale = []
-    customer_forename = input('Please enter customer forename:')
-    customer_surname = input('Please enter customer surname:')
+    customer_forename = input('Please enter customer forename: ')
+    customer_surname = input('Please enter customer surname: ')
+
+    # Display house listings better
     for i, item in enumerate(houses, 1):
-        print(*i, item)
+        print(i, item)
 
-    sel_check = False
-    while not sel_check:
+    while True:
         try:
-            select = int(input('Please select a purchase'))# didnt need the extra bracket   #ADDED INT
-            if select > 0 and select < len(houses):
-                sel_check = True
-        except:
-            print('ERROR PLEASE ENTER A VALID PROPERTY')
+            select = int(input(f'Please select a property (1 to {len(houses)}): '))
+            if 1 <= select <= len(houses):
+                break
+            else:
+                print(f"Please select a valid property number between 1 and {len(houses)}.")
+        except ValueError:
+            print("ERROR: Please enter a valid number.")
 
-    sub_total = houses[select-1][3]
-    print(sub_total)
+
+    property_selected = houses[select - 1]
+    if property_selected not in houses:
+        print("This property has already been sold!")
+        return
+
+    sub_total = property_selected[3]
     total_fees = 0
 
-
     if sub_total > 100000:
-        total_fees += 3000+(sub_total-100000) * 0.2
+        total_fees += 3000 + (sub_total - 100000) * 0.2
     else:
-        total_fees += sub_total *0.3
+        total_fees += sub_total * 0.3
 
-    
-
-    final_total = sub_total+total_fees
+    final_total = sub_total + total_fees
     sale.append(customer_forename)
     sale.append(customer_surname)
     sale.append(sub_total)
     sale.append(final_total)
     sales.append(sale)
 
-    print('Customer Receipt\n\n  FORENAME:{}  SURNAME: {}  PROPERTY COST:  {}  WITH STAMP DUTY:   {}'.format(*sales[-1]))
+    print(f'Customer Receipt\n\n FORENAME: {sales[-1][0]}  SURNAME: {sales[-1][1]}  PROPERTY COST: {sales[-1][2]}  WITH STAMP DUTY: {sales[-1][3]}')
     print('\nTRANSACTION COMPLETE - PROPERTY REMOVED FROM SALES DATABASE\n')
-    print (houses[select])
-    del houses[select] 
+    print(property_selected)
+    del houses[select - 1]
 
 
 while True:
